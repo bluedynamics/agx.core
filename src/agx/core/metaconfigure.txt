@@ -1,0 +1,105 @@
+
+<!--
+
+AGX base directives
+===================
+  
+  First load this snipped of text as ZCML.
+  
+    >>> from zope.configuration.xmlconfig import XMLConfig
+    >>> import agx.core
+   
+    Keep config, need its context later
+    
+    >>> config = XMLConfig('metaconfigure.txt', agx.core)
+    >>> config()
+    
+-->
+<configure xmlns="http://namespaces.zope.org/agx">
+  
+  <!--
+    Register Transform.
+  -->
+  <transform
+    name="mocktransform"
+    class="agx.core.tests.mock.TransformMock"
+  />
+  <!--
+    Lookup transform.
+    
+    >>> from zope.component import getUtility
+    >>> from agx.core.interfaces import ITransform
+    >>> transform = getUtility(ITransform, name='mocktransform')
+    >>> transform
+    <agx.core.tests.mock.TransformMock object at ...>
+    
+  -->
+  <!--
+    Register Generator.
+  -->
+  <generator
+    name="mockgenerator"
+    transform="mocktransform"
+    depends="NO"
+    targethandler="agx.core.tests.mock.TargetHandlerMock"
+  />
+  <!--
+    Lookup generator.
+    
+    >>> from agx.core.interfaces import IGenerator
+    >>> transform = getUtility(IGenerator, name='mocktransform.mockgenerator')
+    >>> transform
+    <agx.core._api.Generator object at ...>
+    
+    Lookup dispatcher.
+    
+    >>> from agx.core.interfaces import IDispatcher
+    >>> dispatcher = getUtility(IGenerator, name='mocktransform.mockgenerator')
+    >>> dispatcher
+    <agx.core._api.Generator object at ...>
+    
+    Lookup target handler.
+    
+    >>> from agx.core.interfaces import ITargetHandler
+    >>> targethandler = getUtility(ITargetHandler,
+    ...                            name='mocktransform.mockgenerator')
+    >>> targethandler
+    <agx.core.tests.mock.TargetHandlerMock object at ...>
+    
+  -->
+  <!--
+    Register Generator without targethandler.
+  -->
+  <generator
+    name="generatorwotargethandler"
+    transform="mocktransform"
+    depends="NO"
+  />
+  <!--
+    An look it up.
+    
+    >>> transform = getUtility(IGenerator,
+    ...                        name='mocktransform.generatorwotargethandler')
+    >>> transform
+    <agx.core._api.Generator object at ...>
+    
+  -->
+  <!--
+    Register scope.
+  -->
+  <scope
+    name="dummyscope"
+    transform="mocktransform"
+    interfaces="zope.interface.Interface"
+  />
+  <!--
+    Lookup cope.
+    
+    >>> from agx.core.interfaces import IScope
+    >>> scope = getUtility(IScope, name='mocktransform.dummyscope')
+    >>> scope
+    <agx.core._api.Scope object at ...>
+    
+  -->
+    
+</configure>

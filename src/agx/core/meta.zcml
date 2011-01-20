@@ -1,0 +1,31 @@
+<configure xmlns="http://namespaces.zope.org/meta">
+
+  <directives namespace="http://namespaces.zope.org/agx">
+  
+    <directive
+      name="transform"
+      schema=".metadirectives.ITransformDirective"
+      handler=".metaconfigure.transformDirective"
+    />
+    
+    <directive
+      name="generator"
+      schema=".metadirectives.IGeneratorDirective"
+      handler=".metaconfigure.generatorDirective"
+    />
+    
+    <directive
+      name="scope"
+      schema=".metadirectives.IScopeDirective"
+      handler=".metaconfigure.scopeDirective"
+    />
+    
+    <directive
+      name="handler"
+      schema=".metadirectives.IHandlerDirective"
+      handler=".metaconfigure.handlerDirective"
+    />
+  
+  </directives>
+
+</configure>
