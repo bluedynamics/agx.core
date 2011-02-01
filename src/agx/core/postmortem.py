@@ -1,6 +1,3 @@
-# Copyright 2003-2009, BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 import sys
 
 def postmortem(type, value, tb):
@@ -13,6 +10,7 @@ def postmortem(type, value, tb):
         traceback.print_exception(type, value, tb)
         print
         pdb.pm()
+
 
 def opt_callback(option, opt, value, parser):
     sys.excepthook = postmortem

@@ -1,17 +1,18 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 import agx.core
+
 
 def writesourcepath(source, elem):
     setattr(elem, '_AGX_Target_sourcepath', source.path)
-    
+
+
 def readsourcepath(elem):
     return getattr(elem, '_AGX_Target_sourcepath', [])
+
 
 def write_source_to_target_mapping(source, target):
     tok = agx.core.token('sourcetotargetuuidmapping', True, uuids={})
     tok.uuids[source.uuid] = target.uuid
+
 
 def read_target_node(source, target):
     tok = agx.core.token('sourcetotargetuuidmapping', False)
@@ -19,6 +20,7 @@ def read_target_node(source, target):
     if not target_uuid:
         return None
     return target.node(target_uuid)
+
 
 def normalizetext(text):
     """Normalize a piece of text.

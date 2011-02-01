@@ -1,6 +1,3 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 import types
 from odict import odict
 from node.interfaces import IRoot
@@ -29,6 +26,7 @@ from agx.core.util import (
     write_source_to_target_mapping,
 )
 
+
 class Controller(object):
     """AGX standalone main controller.
     """
@@ -50,6 +48,7 @@ class Controller(object):
             target = processor(source, target)
         target()
         return target
+
 
 class Processor(object):
     """Default processor.
@@ -148,6 +147,7 @@ class Processor(object):
                 print (indent) * ' ' + ' - %s' % gen.name
             self._printdtree(dtree[key][1], indent + 4)
 
+
 class Generator(object):
     """Default Generator.
     """
@@ -170,6 +170,7 @@ class Generator(object):
             self.target(child)            
             dispatcher(child, self.target)
             self._dispatch([node for name, node in child.items()])
+
 
 class TargetHandler(object):
     """Abstract target handler.
@@ -202,6 +203,7 @@ class TargetHandler(object):
                 return
         raise KeyError(u"Target node does not exist.")
 
+
 class NullTargetHandler(TargetHandler):
     """A target handler which does nothing.
     
@@ -210,6 +212,7 @@ class NullTargetHandler(TargetHandler):
     
     def __call__(self, source):
         pass
+
 
 class TreeSyncPreperator(TargetHandler):
     """Sync anchor by sourcepath.
@@ -228,6 +231,7 @@ class TreeSyncPreperator(TargetHandler):
         if set_anchor:
             self.anchor = target
 
+
 class Scope(object):
     """Scope mapping against interfaces.
     """
@@ -244,6 +248,7 @@ class Scope(object):
             if iface.providedBy(node):
                 return True
         return False
+
 
 class Dispatcher(object):
     """Default dispatcher.
@@ -278,6 +283,7 @@ class Dispatcher(object):
                     if handler.name.startswith(self.name)]
         return handlers
 
+
 class Handler(object):
     """Base handler, can be registered by ``@handler`` decorator.
     """
@@ -291,6 +297,7 @@ class Handler(object):
     
     def __call__(self, source, target):
         self._callfunc(self, source, target)
+
 
 def token(name, create, reset=False, **kw):
     """Create or lookup a token by name.
@@ -308,6 +315,7 @@ def token(name, create, reset=False, **kw):
         token = Token(**kw)
         provideUtility(token, provides=IToken, name=name)
     return token
+
 
 class Token(object):
     """A token.

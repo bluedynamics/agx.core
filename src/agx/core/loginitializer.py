@@ -1,10 +1,8 @@
-# Copyright 2003-2009, BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 import logging
 import sys
 
 loghandler = None
+
 
 def initLog(filename):
     """Initialise the logger.
@@ -17,6 +15,7 @@ def initLog(filename):
     hdlr.setFormatter(formatter)
     log.addHandler(hdlr)
     log.setLevel(logging.DEBUG)
+
 
 def addConsoleLogging():
     """Add logging to the console.
@@ -31,7 +30,7 @@ def addConsoleLogging():
     log.addHandler(hdlr)
     return hdlr
 
+
 def opt_callback(option, opt, value, parser):
     log = logging.getLogger('loginitializer')
     loghandler.setLevel(logging.DEBUG)
-

@@ -1,9 +1,9 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
-from zope import interface
-from zope import schema
+from zope import (
+    interface,
+    schema,
+)
 from zope.configuration import fields
+
 
 class ITransformDirective(interface.Interface):
     """Directive for transforms.
@@ -18,6 +18,7 @@ class ITransformDirective(interface.Interface):
         title=u"Transform implementation",
         description=u"``agx.core.interfaces.ITransform`` implementation",
         required=True)
+
 
 class IGeneratorDirective(interface.Interface):
     """Directive for generators.
@@ -58,6 +59,7 @@ class IGeneratorDirective(interface.Interface):
         description=u"Inserted to Sphinx documentation if set.",
         required=False)
 
+
 class IScopeDirective(interface.Interface):
     """Directive for scopes.
     """
@@ -82,7 +84,8 @@ class IScopeDirective(interface.Interface):
         title=u"Scope implementation",
         description=u"``agx.core.interfaces.IScope`` implementation",
         required=False)
-    
+
+
 class IHandlerDirective(interface.Interface):
     """Directive for handlers.
     """

@@ -1,6 +1,3 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 # XXX: this main should be moved from agx.core to somewhere.
 
 from agx.core import loginitializer
@@ -26,9 +23,11 @@ log = logging.getLogger('main')
 ARCHGENXML_VERSION_LINE = "AGX %s - (c) BlueDynamics Alliance, " +\
                           "http://bluedynamics.com, GPL 2"
 
+
 def version():
     ver = resource_string(__name__, os.path.join('version.txt')).strip()
     return str(ver)
+
 
 parser = OptionParser("Usage: agx UMLFILE options")
 
@@ -56,10 +55,12 @@ def parse_options():
                       default=False, help="Enable postmortem debugger.")
     return parser.parse_args()
 
+
 def avaliable_profiles():
     confloader = getUtility(IConfLoader)
     for profile in confloader.profiles:
         print '%s %s' % (profile[0], profile[1])
+
 
 def agx_export(modelpath, profilenames):
     if not os.path.exists(modelpath):
@@ -80,12 +81,14 @@ def agx_export(modelpath, profilenames):
         log.info("Export '%s' " % profile[0])
         shutil.copy(profile[1], target)
 
+
 def agx_info():
     version = open(os.path.join(os.path.dirname(agx.core.__file__),
                    'version.txt')).read()
     confloader = getUtility(IConfLoader)
     flavour = confloader.flavour
     print 'AGX %s %s' % (version, flavour)
+
 
 def run():
     starttime = time()

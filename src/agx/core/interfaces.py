@@ -1,6 +1,3 @@
-# Copyright Blue Dynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
-
 from zope.interface import (
     Interface,
     Attribute,
@@ -16,9 +13,11 @@ from node.interfaces import (
     ICallableNode,
 )
 
+
 ###############################################################################   
 # Core Interfaces
 ###############################################################################
+
 
 class IProfileLocation(Interface):
     """Utility interface.
@@ -29,6 +28,7 @@ class IProfileLocation(Interface):
     
     name = Attribute(u"UML profile name")
     package = Attribute(u"profile related package.")
+
 
 class IConfLoader(Interface):
     """Interface to set up the AGX configuration.
@@ -47,6 +47,7 @@ class IConfLoader(Interface):
         """Load required transforms and generators.
         """
 
+
 class IController(Interface):
     """AGX controller interface.
     """
@@ -58,6 +59,7 @@ class IController(Interface):
         @param targetpath: target path
         """
 
+
 class IProcessor(Interface):
     """AGX processor interface.
     """
@@ -68,6 +70,7 @@ class IProcessor(Interface):
         @param source: ``agx.core.interfaces.ISource``
         @param target: ``agx.core.interfaces.ITarget``
         """
+
 
 class ITransform(Interface):
     """Transform interface.
@@ -89,6 +92,7 @@ class ITransform(Interface):
         @return: ``agx.core.interfaces.ITarget`` implementation.
         """
 
+
 class IGenerator(Interface):
     """Generator interface.
     """
@@ -104,6 +108,7 @@ class IGenerator(Interface):
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
 
+
 class IDispatcher(Interface):
     """Dispatcher interface.
     """
@@ -116,6 +121,7 @@ class IDispatcher(Interface):
         @param source: ``agx.core.interfaces.ISource`` implementation.
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
+
 
 class IScope(Interface):
     """Scope interface.
@@ -130,6 +136,7 @@ class IScope(Interface):
         @param node: ``agx.core.interfaces.INode`` implementation.
         @return: bool
         """
+
 
 class ITargetHandler(Interface):
     """Interface to handle the write target for IHandler implementations.
@@ -154,6 +161,7 @@ class ITargetHandler(Interface):
         @param path: list representing the absolute node path.
         """
 
+
 class IHandler(Interface):
     """Handler interface.
     """
@@ -170,6 +178,7 @@ class IHandler(Interface):
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
 
+
 class IToken(Interface):
     """Token for data collection.
     """
@@ -182,9 +191,11 @@ class IToken(Interface):
         """Provide access to all given kw args.
         """
 
+
 ###############################################################################
 # Model related interfaces.
 ###############################################################################
+
 
 class IDataAcquirer(IReadMapping):
     """Interface for acquiring data from ``INode.``
@@ -208,6 +219,7 @@ class IDataAcquirer(IReadMapping):
                            point.
         """
 
+
 class IDataReader(IReadMapping):
     """Convenience reader interface.
     """
@@ -218,13 +230,16 @@ class IDataReader(IReadMapping):
         """Return available keys.
         """
 
+
 ###############################################################################
 # IO related interfaces.
 ###############################################################################
 
+
 class ISource(INode):
     """Source element.
     """
+
 
 class ITarget(ICallableNode):
     """Target Element.
