@@ -14,7 +14,6 @@ setup(name='agx.core',
       description=shortdesc,
       long_description=longdesc,
       classifiers=[
-            'Development Status :: 3 - Alpha',
             'License :: OSI Approved :: GNU General Public License (GPL)',
             'Operating System :: OS Independent',
             'Programming Language :: Python',
@@ -31,7 +30,7 @@ setup(name='agx.core',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'zodict',
+          'node',
           'zope.configuration',
       ],
       extras_require = dict(

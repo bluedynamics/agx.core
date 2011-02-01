@@ -8,7 +8,33 @@ from zope.interface import alsoProvides
 # IO related
 ###############################################################################
 
-from zodict.node import Node
+from plumber import plumber
+from node.parts import (
+    Adopt,
+    NodeChildValidate,
+    Nodespaces,
+    Attributes,
+    DefaultInit,
+    Nodify,
+    Reference,
+    Order,
+    OdictStorage,
+)
+
+class Node(object):
+    __metaclass__ = plumber
+    __plumbing__ = (
+        Adopt,
+        NodeChildValidate,
+        Nodespaces,
+        Attributes,
+        DefaultInit,
+        Nodify,
+        Reference,
+        Order,
+        OdictStorage,
+    )
+
 from agx.core.interfaces import ISource
 
 class SourceMock(Node):
@@ -28,7 +54,7 @@ class TargetMock(Node):
 # Transform related
 ###############################################################################
 
-from zodict.interfaces import IRoot
+from node.interfaces import IRoot
 from agx.core.interfaces import ITransform
 
 class TransformMock(object):

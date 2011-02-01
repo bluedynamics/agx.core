@@ -3,25 +3,31 @@
 
 import types
 from odict import odict
-from zodict.interfaces import IRoot
+from node.interfaces import IRoot
 from zope.interface import implements
-from zope.component import getUtility
-from zope.component import getUtilitiesFor
-from zope.component import provideUtility
+from zope.component import (
+    getUtility,
+    getUtilitiesFor,
+    provideUtility,
+)
 from zope.component.interfaces import ComponentLookupError
-from agx.core.interfaces import IConfLoader
-from agx.core.interfaces import IController
-from agx.core.interfaces import IProcessor
-from agx.core.interfaces import ITransform
-from agx.core.interfaces import IGenerator
-from agx.core.interfaces import ITargetHandler
-from agx.core.interfaces import IDispatcher
-from agx.core.interfaces import IHandler
-from agx.core.interfaces import IScope
-from agx.core.interfaces import IToken
-from agx.core.util import readsourcepath
-from agx.core.util import writesourcepath
-from agx.core.util import write_source_to_target_mapping
+from agx.core.interfaces import (
+    IConfLoader,
+    IController,
+    IProcessor,
+    ITransform,
+    IGenerator,
+    ITargetHandler,
+    IDispatcher,
+    IHandler,
+    IScope,
+    IToken,
+)
+from agx.core.util import (
+    readsourcepath,
+    writesourcepath,
+    write_source_to_target_mapping,
+)
 
 class Controller(object):
     """AGX standalone main controller.

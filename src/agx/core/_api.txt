@@ -119,11 +119,12 @@ or created by target handler.
 We need a mock model.
 ::
 
+  >>> from agx.core.tests.mock import Node
   >>> from agx.core.interfaces import ITarget
-  >>> from zodict.node import Node
   >>> class TargetMock(Node):
   ...     implements(ITarget)
   ...     def __call__(self): pass
+  
   >>> target = TargetMock('root')
   >>> target['child1'] = TargetMock()
   >>> target['child1']['sub1'] = TargetMock()
@@ -138,7 +139,7 @@ Mark root.
 ::
 
   >>> from zope.interface import alsoProvides
-  >>> from zodict.interfaces import IRoot
+  >>> from node.interfaces import IRoot
   >>> alsoProvides(target, IRoot)
   >>> IRoot.providedBy(target)
   True

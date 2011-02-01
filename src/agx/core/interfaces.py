@@ -11,7 +11,7 @@ from zope.interface.common.mapping import (
     IFullMapping,
 )
 from zope.location.interfaces import ILocation
-from zodict.interfaces import (
+from node.interfaces import (
     INode,
     ICallableNode,
 )
