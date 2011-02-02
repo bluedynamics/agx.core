@@ -7,7 +7,6 @@ from zope.interface.common.mapping import (
     IWriteMapping,
     IFullMapping,
 )
-from zope.location.interfaces import ILocation
 from node.interfaces import (
     INode,
     ICallableNode,
