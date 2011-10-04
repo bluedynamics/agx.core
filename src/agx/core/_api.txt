@@ -553,6 +553,12 @@ specific token. the target node reads from this for writing.
 
   >>> tok.bar['data'] = Node('data')
 
+  now get an existing token and verify that extra parameters get added to it
+  >>> tok = token('foobar', True, baz='SomeString')
+  >>> tok.baz
+  'SomeString'
+  
+
 Change a value of the token.
 ::
 

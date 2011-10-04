@@ -309,6 +309,10 @@ def token(name, create, reset=False, **kw):
         token = getUtility(IToken, name=name)
         if reset:
             token.__init__(**kw)
+            
+        for k in kw:
+            if not hasattr(token, k): setattr(token, k, kw[k])
+            
     except ComponentLookupError, e:
         if not create:
             raise e
