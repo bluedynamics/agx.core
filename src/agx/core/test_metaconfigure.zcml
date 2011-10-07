@@ -1,4 +1,3 @@
-
 <!--
 
 AGX base directives
@@ -11,10 +10,11 @@ AGX base directives
    
     Keep config, need its context later
     
-    >>> config = XMLConfig('metaconfigure.txt', agx.core)
+    >>> config = XMLConfig('test_metaconfigure.zcml', agx.core)
     >>> config()
     
 -->
+
 <configure xmlns="http://namespaces.zope.org/agx">
   
   <!--
@@ -24,6 +24,7 @@ AGX base directives
     name="mocktransform"
     class="agx.core.tests.mock.TransformMock"
   />
+  
   <!--
     Lookup transform.
     
@@ -34,6 +35,7 @@ AGX base directives
     <agx.core.tests.mock.TransformMock object at ...>
     
   -->
+  
   <!--
     Register Generator.
   -->
@@ -43,6 +45,7 @@ AGX base directives
     depends="NO"
     targethandler="agx.core.tests.mock.TargetHandlerMock"
   />
+  
   <!--
     Lookup generator.
     
@@ -67,6 +70,7 @@ AGX base directives
     <agx.core.tests.mock.TargetHandlerMock object at ...>
     
   -->
+  
   <!--
     Register Generator without targethandler.
   -->
@@ -75,6 +79,7 @@ AGX base directives
     transform="mocktransform"
     depends="NO"
   />
+  
   <!--
     An look it up.
     
@@ -84,6 +89,7 @@ AGX base directives
     <agx.core._api.Generator object at ...>
     
   -->
+  
   <!--
     Register scope.
   -->
@@ -92,6 +98,7 @@ AGX base directives
     transform="mocktransform"
     interfaces="zope.interface.Interface"
   />
+  
   <!--
     Lookup cope.
     

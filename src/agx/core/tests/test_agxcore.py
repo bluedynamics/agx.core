@@ -15,8 +15,8 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.REPORT_ONLY_FIRST_FAILURE
 
 TESTFILES = [
-    '../metaconfigure.txt',
-    '../_api.txt',
+    '../test_metaconfigure.zcml',
+    '../_api.rst',
 ]
 
 def test_suite():
