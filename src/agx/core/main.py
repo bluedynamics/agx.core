@@ -7,6 +7,7 @@ loginitializer.loghandler = loginitializer.addConsoleLogging()
 
 import os
 import sys
+import re
 import shutil
 import agx.core
 from time import time
@@ -111,7 +112,7 @@ def run():
     modelpath = args[0]
     modelprofiles = options.profiles.strip()
     if modelprofiles:
-        modelprofiles = modelprofiles.split(';')
+        modelprofiles = re.split('[;,]',modelprofiles)
     else:
         modelprofiles = []
     modelpaths = [modelpath] + modelprofiles
