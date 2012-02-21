@@ -77,10 +77,16 @@ def agx_export(modelpath, profilenames):
         log.error("One or more profiles not provided")
         sys.exit(2)
     target = modelpath[:modelpath.rfind(os.path.sep)]
-    log.info("Export to target: '%s'" % target)
+    profilepath = os.path.join(target, 'uml_profiles')
+    if not os.path.exists(profilepath):
+        os.mkdir(profilepath)
+    if not os.path.isdir(profilepath):
+        log.error("%s is not a directory" % profilepath)
+        sys.exit(2)
+    log.info("Export to target: '%s'" % profilepath)
     for profile in profiles:
         log.info("Export '%s' " % profile[0])
-        shutil.copy(profile[1], target)
+        shutil.copy(profile[1], profilepath)
 
 
 def agx_info():
