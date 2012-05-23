@@ -9,7 +9,7 @@ from zope.interface.common.mapping import (
 )
 from node.interfaces import (
     INode,
-    ICallableNode,
+    ICallable,
 )
 
 
@@ -240,6 +240,6 @@ class ISource(INode):
     """
 
 
-class ITarget(ICallableNode):
+class ITarget(INode, ICallable):
     """Target Element.
     """
