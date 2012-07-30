@@ -9,7 +9,7 @@ from zope.interface import alsoProvides
 ###############################################################################
 
 from plumber import plumber
-from node.parts import (
+from node.behaviors import (
     Adopt,
     NodeChildValidate,
     Nodespaces,
