@@ -94,7 +94,12 @@ def agx_info():
                    'version.txt')).read()
     confloader = getUtility(IConfLoader)
     flavour = confloader.flavour
-    print 'AGX %s %s' % (version, flavour)
+    info = 'AGX %s %s\n' % (version, flavour)
+    generators = confloader.generators
+    info += 'Installed generators:\n'
+    for name, version in generators:
+        info += '    %s (%s)\n' % (name, version)
+    print info
 
 
 def run():

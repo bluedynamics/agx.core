@@ -42,6 +42,9 @@ class IConfLoader(Interface):
     profiles = Attribute(u"List of 2-tuples containing available "
                          u"(profilename, profilepath)")
     
+    generators = Attribute(u"List of 2-tuples containing generator name and "
+                           u"a unique identifyer for it's version.")
+    
     def __call__():
         """Load required transforms and generators.
         """
