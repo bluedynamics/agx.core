@@ -11,6 +11,8 @@ import re
 import shutil
 import agx.core
 from time import time
+from time import strftime
+from time import gmtime
 from pkg_resources import resource_string
 from optparse import OptionParser
 from zope.component import getUtility
@@ -121,6 +123,8 @@ def run():
         agx_export(args[0], options.export.split(';'))
         return
     log.info(ARCHGENXML_VERSION_LINE, version())
+    log.info('Generator started at %s.' % (
+            strftime("%H:%M:%S %Y-%m-%d", gmtime())))
     XMLConfig('configure.zcml', agx.core)()
     modelpath = args[0]
     modelprofiles = options.profiles.strip()
