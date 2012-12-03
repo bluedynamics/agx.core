@@ -32,9 +32,11 @@ def version():
 
 parser = OptionParser("Usage: agx UMLFILE options")
 
+
 def parse_options():
     parser.add_option("-o", "--output-directory", dest="outdir", default='.',
-                      help="Write generated code to TARGET", metavar="/target/path")
+                      help="Write generated code to TARGET",
+                      metavar="/target/path")
     parser.add_option("-p", "--profiles", dest="profiles", default='',
                       help="Comma seperated Paths to profile file(s)",
                       metavar="/path/to/profile1.uml;/path/to/profile2.uml")
@@ -123,7 +125,7 @@ def run():
     modelpath = args[0]
     modelprofiles = options.profiles.strip()
     if modelprofiles:
-        modelprofiles = re.split('[;,]',modelprofiles)
+        modelprofiles = re.split('[;,]', modelprofiles)
     else:
         modelprofiles = []
     modelpaths = [modelpath] + modelprofiles
