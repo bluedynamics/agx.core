@@ -27,7 +27,7 @@ utility. This is responsible to load the desired transforms and generators::
 At least one transform must be registered by a unique name::
 
     >>> from agx.core import registerTransform
-    >>> from agx.core.tests.mock import TransformMock
+    >>> from agx.core.testing.mock import TransformMock
     >>> registerTransform(name='mock', class_=TransformMock)
 
 This transform provides ``agx.core.interfaces.ISource`` and
@@ -37,7 +37,7 @@ Register some generators to test generator execution and dependency chain::
 
     >>> from agx.core import registerGenerator
     >>> from agx.core import Generator
-    >>> from agx.core.tests.mock import TargetHandlerMock
+    >>> from agx.core.testing.mock import TargetHandlerMock
     >>> class NullGenerator(Generator):
     ...     def __call__(self, source, target):
     ...         print 'generator: %s' % self.name
@@ -115,7 +115,7 @@ or created by target handler.
 
 We need a mock model::
 
-    >>> from agx.core.tests.mock import Node
+    >>> from agx.core.testing.mock import Node
     >>> from agx.core.interfaces import ITarget
     >>> class TargetMock(Node):
     ...     implements(ITarget)
@@ -191,7 +191,7 @@ Test setanchor function::
 The existing mock target handler does a 1:1 mapping between source and target
 on synchronous and existing models::
 
-    >>> from agx.core.tests.mock import TargetHandlerMock
+    >>> from agx.core.testing.mock import TargetHandlerMock
     >>> targethandler = TargetHandlerMock(target)
     >>> targethandler.anchor.path
     ['root']
@@ -240,7 +240,7 @@ name and generator name::
 
     >>> from agx.core.interfaces import ITargetHandler
     >>> getUtility(ITargetHandler, name='mock2mock.mockgenerator')
-    <agx.core.tests.mock.TargetHandlerMock object at ...>
+    <agx.core.testing.mock.TargetHandlerMock object at ...>
 
     >>> generator(source, targethandler)
     source: ['root']

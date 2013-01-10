@@ -22,7 +22,7 @@ AGX base directives
   -->
   <transform
     name="mocktransform"
-    class="agx.core.tests.mock.TransformMock"
+    class="agx.core.testing.mock.TransformMock"
   />
   
   <!--
@@ -32,7 +32,7 @@ AGX base directives
     >>> from agx.core.interfaces import ITransform
     >>> transform = getUtility(ITransform, name='mocktransform')
     >>> transform
-    <agx.core.tests.mock.TransformMock object at ...>
+    <agx.core.testing.mock.TransformMock object at ...>
     
   -->
   
@@ -43,7 +43,7 @@ AGX base directives
     name="mockgenerator"
     transform="mocktransform"
     depends="NO"
-    targethandler="agx.core.tests.mock.TargetHandlerMock"
+    targethandler="agx.core.testing.mock.TargetHandlerMock"
   />
   
   <!--
@@ -67,7 +67,7 @@ AGX base directives
     >>> targethandler = getUtility(ITargetHandler,
     ...                            name='mocktransform.mockgenerator')
     >>> targethandler
-    <agx.core.tests.mock.TargetHandlerMock object at ...>
+    <agx.core.testing.mock.TargetHandlerMock object at ...>
     
   -->
   
