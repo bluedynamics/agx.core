@@ -5,4 +5,7 @@
   <!-- load our own directives -->
   <include file="meta.zcml" />
   
+  <!-- configuration loader utility for flavour. -->
+  <utility factory=".config.ConfLoader" />
+  
 </configure>

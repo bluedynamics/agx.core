@@ -15,6 +15,7 @@ optionflags = doctest.NORMALIZE_WHITESPACE | \
               doctest.REPORT_ONLY_FIRST_FAILURE
 
 TESTFILES = [
+    '../config.rst',
     '../test_metaconfigure.zcml',
     '../_api.rst',
 ]

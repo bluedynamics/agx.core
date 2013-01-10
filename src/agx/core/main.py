@@ -107,6 +107,7 @@ def agx_info():
 
 
 def run():
+    import agx.core.loader
     starttime = time()
     options, args = parse_options()
     if options.listprofiles != 'unset':
