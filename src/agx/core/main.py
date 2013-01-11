@@ -144,7 +144,7 @@ def read_config(localdir, agx):
     if cp.has_option('default', 'target'):
         target = cp.get('default', 'target')
 
-    return profiles, target
+    return [p.strip() for p in profiles], target
 
 def unify_profile_paths(localdir, profiles):
     '''make absolute paths from the profiles'''
