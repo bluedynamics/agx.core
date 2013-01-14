@@ -1,5 +1,6 @@
 import sys
 
+
 def postmortem(type, value, tb):
     # from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/65287
     if hasattr(sys, 'ps1') or not (

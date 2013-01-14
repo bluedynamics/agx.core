@@ -26,9 +26,11 @@ from agx.core.util import normalizetext
 def _chkregistered(iface, name=None):
     try:
         getUtility(iface, name=name)
-        raise ConfigurationError(u"``%s`` was already registered by name '%s'" \
-                                 % (str(iface), str(name)))
-    except ComponentLookupError, e: pass
+        msg = u"``%s`` was already registered by name '%s'"
+        msg = msg % (str(iface), str(name))
+        raise ConfigurationError(msg)
+    except ComponentLookupError, e:
+        pass
 
 
 def registerTransform(name, class_):
@@ -67,11 +69,9 @@ def generatorDirective(_context, name, transform, depends,
     name = '%s.%s' % (transform, name)
     description = normalizetext(description)
     generator = class_(name, depends, description)
-    utility(_context, provides=IGenerator,
-            component=generator, name=name)
+    utility(_context, provides=IGenerator, component=generator, name=name)
     dispatcher = dispatcher(name)
-    utility(_context, provides=IDispatcher,
-            component=dispatcher, name=name)
+    utility(_context, provides=IDispatcher, component=dispatcher, name=name)
     targethandler = targethandler(None)
     utility(_context, provides=ITargetHandler,
             component=targethandler, name=name)
@@ -87,15 +87,14 @@ def registerScope(name, transform, interfaces, class_=Scope):
 def scopeDirective(_context, name, transform, interfaces, class_=Scope):
     name = '%s.%s' % (transform, name)
     scope = class_(name, interfaces)
-    utility(_context, provides=IScope,
-            component=scope, name=name)
+    utility(_context, provides=IScope, component=scope, name=name)
 
 
 def registerHandler(name, transform, generator, scope,
                     order=-1, class_=None, attribute=None):
     if attribute and class_:
-        raise ConfigurationError(u"Either ``class`` or ``attribute`` "
-                                  "must be set.")
+        msg = u"Either ``class`` or ``attribute`` must be set."
+        raise ConfigurationError(msg)
     name = '%s.%s.%s' % (transform, generator, name)
     _chkregistered(IHandler, name=name)
     handler = class_(name, scope, order)
@@ -105,18 +104,17 @@ def registerHandler(name, transform, generator, scope,
 def handlerDirective(_context, name, transform, generator,
                      scope, class_=None, attribute=None, order=-1):
     if attribute and class_:
-        raise ConfigurationError(u"Either ``class`` or ``attribute`` "
-                                  "must be set.")
+        msg = u"Either ``class`` or ``attribute`` must be set."
+        raise ConfigurationError(msg)
     name = '%s.%s.%s' % (transform, generator, name)
     handler = class_(name, scope, order)
-    utility(_context, provides=IHandler,
-            component=handler, name=name)
+    utility(_context, provides=IHandler, component=handler, name=name)
 
 
 class handler(object):
     """Handler decorator.
     """
-    
+
     def __init__(self, name, transform, generator, scope,
                  order=-1, class_=Handler):
         self.name = name
@@ -132,4 +130,4 @@ class handler(object):
         handler = self.class_(name, self.scope, self.order)
         handler.__dict__['_callfunc'] = ob
         provideUtility(handler, provides=IHandler, name=name)
-        return ob # needed?
+        return ob

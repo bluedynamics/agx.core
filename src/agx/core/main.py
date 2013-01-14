@@ -1,10 +1,7 @@
-# XXX: this main should be moved from agx.core to somewhere.
-
 from agx.core import loginitializer
 loginitializer.initLog('agx.core.log')
 loginitializer.loghandler = loginitializer.addConsoleLogging()
 # End of the stuff that needs to be handled first.
-
 import os
 import sys
 import re
@@ -12,9 +9,11 @@ import shutil
 import ConfigParser
 from StringIO import StringIO
 import agx.core
-from time import time
-from time import strftime
-from time import gmtime
+from time import (
+    time,
+    strftime,
+    gmtime,
+)
 from pkg_resources import resource_string
 from optparse import OptionParser
 from zope.component import getUtility
@@ -23,7 +22,9 @@ from agx.core.interfaces import IConfLoader
 from agx.core import postmortem
 import logging
 
+
 log = logging.getLogger('main')
+
 
 ARCHGENXML_VERSION_LINE = "AGX %s - (c) BlueDynamics Alliance, " + \
                           "http://bluedynamics.com, GPL 2"
@@ -107,15 +108,15 @@ def agx_info():
         info += '    %s (%s)\n' % (name, version)
     print info
 
+
 def prepare_model_path(modelpath):
-    '''unifies the containing dir of model, the .agx  and the .uml filename
-    if no .agx is present, it is returned as None
-    '''
+    """Unifies the containing dir of model, the .agx  and the .uml filename
+    if no .agx is present, None is returned.
+    """
     agx = None
     uml = None
     localdir = os.path.abspath(os.path.dirname(modelpath))
     modelfile = os.path.split(modelpath)[1]
-
     if modelfile.endswith('.agx'):
         agx = modelfile
         uml = modelfile[:-4]
@@ -123,17 +124,16 @@ def prepare_model_path(modelpath):
         uml = modelfile
         if os.path.exists(os.path.join(localdir, uml) + '.agx'):
             agx = uml + '.agx'
-    else: #no file suffix given
+    else: # no file suffix given
         uml = modelfile + '.uml'
         if os.path.exists(os.path.join(localdir, uml) + '.agx'):
             agx = uml + '.agx'
-
     return localdir, uml, agx
 
 
-
 def read_config(localdir, agx):
-    '''parses the .agx file and extracts the profiles list and target dir'''
+    """Parses the .agx file and extracts the profiles list and target dir.
+    """
     profiles = []
     target = None
     buf = '[default]\n' + open(os.path.join(localdir, agx)).read()
@@ -143,33 +143,35 @@ def read_config(localdir, agx):
         profiles = re.split('[;,]', cp.get('default', 'profiles'))
     if cp.has_option('default', 'target'):
         target = cp.get('default', 'target')
-
     return [p.strip() for p in profiles], target
 
+
 def unify_profile_paths(localdir, profiles):
-    '''make absolute paths from the profiles'''
+    """make absolute paths from the profiles.
+    """
     res = []
-    #get the profile paths from the config
+    # get the profile paths from the config
     conf = getUtility(IConfLoader)
     profdict = {}
     for name, path in conf.profiles:
         profdict[name] = path
-
-    #unify the profile paths into absolute paths
+    # unify the profile paths into absolute paths
     for profile in profiles:
         if profile.endswith('.uml'):
-            #its a filename ending with .uml, so lets make it 
-            #absolute if necessary 
+            # its a filename ending with .uml, so lets make it absolute if
+            # necessary 
             if not os.path.isabs(profile):
                 profile = os.path.join(localdir, profile)
             res.append(profile)
         else:
-            #its a profile name, so get the abs path from the config
+            # its a profile name, so get the abs path from the config
             res.append(profdict[profile])
-
     return res
 
+
 def run():
+    """AGX main routine.
+    """
     import agx.core.loader
     starttime = time()
     options, args = parse_options()
@@ -188,36 +190,29 @@ def run():
         return
     log.info(ARCHGENXML_VERSION_LINE, version())
     log.info('Generator started at %s.' % (
-            strftime("%H:%M:%S %Y-%m-%d", gmtime())))
+             strftime("%H:%M:%S %Y-%m-%d", gmtime())))
     XMLConfig('configure.zcml', agx.core)()
     modelpath = args[0]
     modelprofiles = options.profiles.strip()
-
     agxprofiles = []
     agxtarget = []
     localdir, umlname, agxname = prepare_model_path(modelpath)
     umlpath = os.path.join(localdir, umlname)
     if agxname:
         agxprofiles, agxtarget = read_config(localdir, agxname)
-
     if modelprofiles:
         modelprofiles = re.split('[;,]', modelprofiles)
     else:
         modelprofiles = agxprofiles
-
     profilepaths = unify_profile_paths(localdir, modelprofiles)
-    
-    #XXX: the following 2 lines must be removed when the hardcoded path
-    #is fixed in agx.eclipse
-    if options.outdir=='.':
-        options.outdir=localdir
-        
-    outdir=options.outdir or localdir
-    
+    # XXX: the following 2 lines must be removed when the hardcoded path
+    # is fixed in agx.eclipse
+    if options.outdir == '.':
+        options.outdir = localdir
+    outdir = options.outdir or localdir
     log.info('generating model: %s' % umlpath)
     log.info('using profiles: %s' % profilepaths)
     log.info('generating into: %s' % outdir)
-    
     modelpaths = [umlpath] + profilepaths
     controller = agx.core.Controller()
     controller(modelpaths, outdir)

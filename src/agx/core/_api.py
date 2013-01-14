@@ -1,7 +1,7 @@
 import types
 from odict import odict
 from node.interfaces import IRoot
-from zope.interface import implements
+from zope.interface import implementer
 from zope.component import (
     getUtility,
     getUtilitiesFor,
@@ -27,11 +27,11 @@ from agx.core.util import (
 )
 
 
+@implementer(IController)
 class Controller(object):
     """AGX standalone main controller.
     """
-    implements(IController)
-    
+
     def __call__(self, sourcepath, targetpath):
         confloader = getUtility(IConfLoader) 
         confloader()
@@ -50,11 +50,11 @@ class Controller(object):
         return target
 
 
+@implementer(IProcessor)
 class Processor(object):
     """Default processor.
     """
-    implements(IProcessor)
-    
+
     def __init__(self, transform):
         """@param transform: The transform name
         """
@@ -72,7 +72,7 @@ class Processor(object):
             # no generators registered:
             return target
         return targethandler.anchor.root
-    
+
     def lookup_generators(self):
         generators = list()
         for genname, generator in getUtilitiesFor(IGenerator):
@@ -81,7 +81,7 @@ class Processor(object):
                 generators.append(generator)
         generators = self._sortgenerators(generators)
         return generators
-    
+
     def _sortgenerators_j(self, generators):
         # jensens flavor of a valid dependency chain sorter
         # it breaks the test, nevertheless its output is valid
@@ -98,16 +98,16 @@ class Processor(object):
             if len(iterkeys) == len(inkeys):
                 raise ValueError, 'Broken dependency chain.'
         return [lookup[key] for key in outkeys[1:]]
-            
+
     def _sortgenerators_r(self, generators):
         dtree = {'NO': ([], {})}
         self._makedtree(generators, dtree)
         sortedgen = list()
         self._fillsorted(sortedgen, dtree)
         return sortedgen
-    
+
     _sortgenerators = _sortgenerators_r
-    
+
     def _fillsorted(self, sortedgen, dtree):
         """Flatten dependency tree.
         """
@@ -115,7 +115,7 @@ class Processor(object):
             for gen in dtree[key][0]:
                 sortedgen.append(gen)
             self._fillsorted(sortedgen, dtree[key][1])
-    
+
     def _makedtree(self, generators, dtree):
         """Sort list of generators by generator.dependency.
         """
@@ -134,7 +134,7 @@ class Processor(object):
                 
         for child in dtree.values():
             self._makedtree(children, child[1])
-    
+
     def _printdtree(self, dtree, indent=0):
         """Debug function.
         """
@@ -148,22 +148,22 @@ class Processor(object):
             self._printdtree(dtree[key][1], indent + 4)
 
 
+@implementer(IGenerator)
 class Generator(object):
     """Default Generator.
     """
-    implements(IGenerator)
-    
+
     def __init__(self, name, depends, description=u''):
         self.name = name
         self.depends = depends
         self.description = description
         self.backup = False
-    
+
     def __call__(self, source, target):
         self.source = source
         self.target = target
         self._dispatch([source])
-    
+
     def _dispatch(self, children):
         dispatcher = getUtility(IDispatcher, name=self.name)
         for child in children:
@@ -172,26 +172,25 @@ class Generator(object):
             self._dispatch([node for name, node in child.items()])
 
 
+@implementer(ITargetHandler)
 class TargetHandler(object):
     """Abstract target handler.
     """
-    implements(ITargetHandler)
-    
     anchor = None
-    
+
     def __init__(self, root):
         self.target = root
         if self.anchor is None:
             self.anchor = root
-    
+
     def __call__(self, source):
         raise NotImplementedError(u"Abstract target handler does not "
                                    "implement ``__call__``.")
-    
+
     def setanchor(self, path):
         node = self.target
         self._setanchor([node], path)
-    
+
     def _setanchor(self, children, path):
         name = path[0]
         for child in children:
@@ -209,7 +208,7 @@ class NullTargetHandler(TargetHandler):
     
     Used as default target handler if no one is defined for a generator.
     """
-    
+
     def __call__(self, source):
         pass
 
@@ -217,14 +216,14 @@ class NullTargetHandler(TargetHandler):
 class TreeSyncPreperator(TargetHandler):
     """Sync anchor by sourcepath.
     """
-    
+
     def __call__(self, source):
         if len(source.path) <= len(readsourcepath(self.anchor)):
             elem = self.anchor
             while len(readsourcepath(elem)) >= len(source.path):
                 elem = elem.__parent__
             self.anchor = elem
-    
+
     def finalize(self, source, target, set_anchor=True):
         writesourcepath(source, target)
         write_source_to_target_mapping(source, target)
@@ -232,17 +231,17 @@ class TreeSyncPreperator(TargetHandler):
             self.anchor = target
 
 
+@implementer(IScope)
 class Scope(object):
     """Scope mapping against interfaces.
     """
-    implements(IScope)
-    
+
     def __init__(self, name, interfaces):
         if not type(interfaces) == types.ListType:
             interfaces = [interfaces]
         self.name = name
         self.interfaces = interfaces
-    
+
     def __call__(self, node):
         for iface in self.interfaces:
             if iface.providedBy(node):
@@ -250,11 +249,11 @@ class Scope(object):
         return False
 
 
+@implementer(IDispatcher)
 class Dispatcher(object):
     """Default dispatcher.
     """
-    implements(IDispatcher)
-    
+
     def __init__(self, generator):
         self.generator = self.name = generator
         self.transform = generator[:generator.find('.')]
@@ -284,17 +283,17 @@ class Dispatcher(object):
         return handlers
 
 
+@implementer(IHandler)
 class Handler(object):
     """Base handler, can be registered by ``@handler`` decorator.
     """
-    implements(IHandler)
-    
+
     def __init__(self, name, scope, order):
         self.name = name
         self.scope = scope
         self.order = order
         self._callfunc = None
-    
+
     def __call__(self, source, target):
         self._callfunc(self, source, target)
 
@@ -309,10 +308,8 @@ def token(name, create, reset=False, **kw):
         token = getUtility(IToken, name=name)
         if reset:
             token.__init__(**kw)
-            
         for k in kw:
             if not hasattr(token, k): setattr(token, k, kw[k])
-            
     except ComponentLookupError, e:
         if not create:
             raise e
@@ -321,10 +318,10 @@ def token(name, create, reset=False, **kw):
     return token
 
 
+@implementer(IToken)
 class Token(object):
     """A token.
     """
-    implements(IToken)
-    
+
     def __init__(self, **kw):
         self.__dict__.update(kw)

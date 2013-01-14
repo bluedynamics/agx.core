@@ -1,4 +1,3 @@
-
 API
 ===
 
@@ -14,11 +13,11 @@ The controller is created and called by the main script.
 It expects a registered ``agx.core.interfaces.IConfLoader`` implementing
 utility. This is responsible to load the desired transforms and generators::
 
-    >>> from zope.interface import implements
+    >>> from zope.interface import implementer
     >>> from zope.component import provideUtility
     >>> from agx.core.interfaces import IConfLoader
-    >>> class LoaderMock(object):
-    ...     implements(IConfLoader)
+    >>> @implementer(IConfLoader)
+    ... class LoaderMock(object):
     ...     transforms = ['mock']
     ...     def __call__(self): pass
     >>> loader = LoaderMock()
@@ -97,8 +96,8 @@ root::
 Overwrite loader and Register the mock transform with another name for later
 tests::
 
-    >>> class LoaderMock(object):
-    ...     implements(IConfLoader)
+    >>> @implementer(IConfLoader)
+    ... class LoaderMock(object):
     ...     transforms = ['mock2mock']
     ...     def __call__(self): pass
     >>> loader = LoaderMock()
@@ -117,8 +116,8 @@ We need a mock model::
 
     >>> from agx.core.testing.mock import Node
     >>> from agx.core.interfaces import ITarget
-    >>> class TargetMock(Node):
-    ...     implements(ITarget)
+    >>> @implementer(ITarget)
+    ... class TargetMock(Node):
     ...     def __call__(self): pass
   
     >>> target = TargetMock('root')
@@ -390,8 +389,8 @@ Register some more handlers for dispatcher testing::
     ...     print 'interface provided'
 
 
-Dispatcher:
------------
+Dispatcher
+----------
 
 The dispatcher is responsible to lookup handlers for the generator namespace,
 check the source node against the scope if defined and execute the handlers in
@@ -539,7 +538,7 @@ specific token. the target node reads from this for writing::
     >>> tok = token('foobar', True, baz='SomeString')
     >>> tok.baz
     'SomeString'
-  
+
 Change a value of the token::
 
     >>> tok.foo = 'foochanged'

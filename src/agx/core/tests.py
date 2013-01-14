@@ -1,5 +1,3 @@
-# Copyright BlueDynamics Alliance - http://bluedynamics.com
-# GNU General Public License Version 2
 import unittest
 import doctest
 import zope.component

@@ -45,6 +45,8 @@ def normalizetext(text):
         lines.append(' '.join(words[start:]))
     return '\n'.join(lines)
 
+
 def dotted_path(node):
-    '''returns the dotted python path of an entity'''
+    """Returns the dotted python path of an entity.
+    """
     return '.'.join(node.path[1:])
