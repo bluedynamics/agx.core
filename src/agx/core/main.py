@@ -65,10 +65,10 @@ def parse_options():
                       default=False, help="Enable postmortem debugger.")
     parser.add_option("-t", "--listtemplates",
                       action="store_false", dest="listtemplates",
-                      default='unset', help="List of available model templates")
+                      default='unset', help="list available model templates")
     parser.add_option("-c", "--create", dest="create_model", 
-                      help="Create a model from a model template by name.",
-                      metavar="/target/path")
+                      help="Create a model from a model template by name. (see '-t' option)",
+                      metavar="template_name")
 
     
     return parser.parse_args()
