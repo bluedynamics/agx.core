@@ -1,4 +1,6 @@
 from agx.core import loginitializer
+from agx.core import modelcreator
+
 loginitializer.initLog('agx.core.log')
 loginitializer.loghandler = loginitializer.addConsoleLogging()
 # End of the stuff that needs to be handled first.
@@ -61,6 +63,14 @@ def parse_options():
     parser.add_option("-m", "--postmortem",
                       action="callback", callback=postmortem.opt_callback,
                       default=False, help="Enable postmortem debugger.")
+    parser.add_option("-t", "--listtemplates",
+                      action="store_false", dest="listtemplates",
+                      default='unset', help="List of available model templates")
+    parser.add_option("-c", "--create", dest="create_model", 
+                      help="Create a model from a model template by name.",
+                      metavar="/target/path")
+
+    
     return parser.parse_args()
 
 
@@ -68,6 +78,13 @@ def avaliable_profiles():
     confloader = getUtility(IConfLoader)
     for profile in confloader.profiles:
         print '%s %s' % (profile[0], profile[1])
+
+
+def avaliable_templates():
+    confloader = getUtility(IConfLoader)
+    for template in confloader.templates:
+        print '%s\t%s\t%s' % (template[0], template[1],template[2])
+
 
 
 def agx_export(modelpath, profilenames):
@@ -168,11 +185,34 @@ def unify_profile_paths(localdir, profiles):
             res.append(profdict[profile])
     return res
 
+def create_model(targetdir,templatename,modelname):
+    confloader = getUtility(IConfLoader)
+    settings=confloader.templates_dict[templatename]
+    if not os.path.exists(targetdir):
+        os.mkdir(targetdir)
+    
+    path=settings['path']
+    files=os.listdir(path)
+    for file in settings['files']:
+        buf=open(os.path.join(path,file)).read()
+        
+        #fix model references due to renaming
+        if file.endswith('.notation'):
+            buf=buf.replace('model.uml',modelname+'.uml')
+        if file.endswith('.di'):
+            buf=buf.replace('model.notation',modelname+'.notation')
+        open(os.path.join(targetdir,file.replace('model',modelname)),'w').write(buf)
 
+    agx=modelname+'.uml.agx'
+    profiles=read_config(targetdir,agx)[0]
+    #load the profiles
+    agx_export(os.path.join(targetdir,agx),profiles)
+    
 def run():
     """AGX main routine.
     """
     import agx.core.loader
+
     starttime = time()
     options, args = parse_options()
     if options.listprofiles != 'unset':
@@ -180,6 +220,23 @@ def run():
         return
     if options.info != 'unset':
         agx_info()
+        return
+    if options.listtemplates != 'unset':
+        avaliable_templates()
+        return
+    # Create the model from a template
+    if options.create_model:
+        if args:
+            modelname=args[0]
+        else:
+            modelname='model'
+        if options.outdir:
+            targetdir=options.outdir
+        else:
+            targetdir='.'
+            
+        templatename=options.create_model
+        create_model(targetdir,templatename,modelname)
         return
     if len(args) != 1:
         log.critical("No control flags given.")
