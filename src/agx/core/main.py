@@ -1,5 +1,4 @@
 from agx.core import loginitializer
-from agx.core import modelcreator
 
 loginitializer.initLog('agx.core.log')
 loginitializer.loghandler = loginitializer.addConsoleLogging()
