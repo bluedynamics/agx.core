@@ -68,8 +68,6 @@ def parse_options():
     parser.add_option("-c", "--create", dest="create_model", 
                       help="Create a model from a model template by name. (see '-t' option)",
                       metavar="template_name")
-
-    
     return parser.parse_args()
 
 
@@ -82,8 +80,7 @@ def avaliable_profiles():
 def avaliable_templates():
     confloader = getUtility(IConfLoader)
     for template in confloader.templates:
-        print '%s\t%s\t%s' % (template[0], template[1],template[2])
-
+        print '%s\t%s\t%s' % (template[0], template[1], template[2])
 
 
 def agx_export(modelpath, profilenames):
@@ -184,34 +181,33 @@ def unify_profile_paths(localdir, profiles):
             res.append(profdict[profile])
     return res
 
-def create_model(targetdir,templatename,modelname):
+
+def create_model(targetdir, templatename, modelname):
     confloader = getUtility(IConfLoader)
-    settings=confloader.templates_dict[templatename]
+    settings = confloader.templates_dict[templatename]
     if not os.path.exists(targetdir):
         os.mkdir(targetdir)
-    
-    path=settings['path']
-    files=os.listdir(path)
+    path = settings['path']
+    files = os.listdir(path)
     for file in settings['files']:
-        buf=open(os.path.join(path,file)).read()
-        
-        #fix model references due to renaming
+        buf = open(os.path.join(path,file)).read()
+        # fix model references due to renaming
         if file.endswith('.notation'):
-            buf=buf.replace('model.uml',modelname+'.uml')
+            buf = buf.replace('model.uml', modelname + '.uml')
         if file.endswith('.di'):
-            buf=buf.replace('model.notation',modelname+'.notation')
-        open(os.path.join(targetdir,file.replace('model',modelname)),'w').write(buf)
-
-    agx=modelname+'.uml.agx'
-    profiles=read_config(targetdir,agx)[0]
+            buf = buf.replace('model.notation', modelname + '.notation')
+        open(os.path.join(targetdir,
+                          file.replace('model', modelname)), 'w').write(buf)
+    agx = modelname + '.uml.agx'
+    profiles = read_config(targetdir, agx)[0]
     #load the profiles
-    agx_export(os.path.join(targetdir,agx),profiles)
-    
+    agx_export(os.path.join(targetdir, agx), profiles)
+
+
 def run():
     """AGX main routine.
     """
     import agx.core.loader
-
     starttime = time()
     options, args = parse_options()
     if options.listprofiles != 'unset':
@@ -226,16 +222,15 @@ def run():
     # Create the model from a template
     if options.create_model:
         if args:
-            modelname=args[0]
+            modelname = args[0]
         else:
-            modelname='model'
+            modelname = 'model'
         if options.outdir:
-            targetdir=options.outdir
+            targetdir = options.outdir
         else:
-            targetdir='.'
-            
-        templatename=options.create_model
-        create_model(targetdir,templatename,modelname)
+            targetdir = '.'
+        templatename = options.create_model
+        create_model(targetdir, templatename, modelname)
         return
     if len(args) != 1:
         log.critical("No control flags given.")
