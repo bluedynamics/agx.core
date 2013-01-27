@@ -68,6 +68,9 @@ def parse_options():
     parser.add_option("-c", "--create", dest="create_model", 
                       help="Create a model from a model template by name. (see '-t' option)",
                       metavar="template_name")
+    parser.add_option("-s", "--short", default="unset",
+                      action='store_false',dest="short_messages",
+                      help="option for short machine readable messages")
     return parser.parse_args()
 
 
@@ -77,11 +80,13 @@ def avaliable_profiles():
         print '%s %s' % (profile[0], profile[1])
 
 
-def avaliable_templates():
+def avaliable_templates(short=False):
     confloader = getUtility(IConfLoader)
     for template in confloader.templates:
-        print '%s\t%s\t%s' % (template[0], template[1], template[2])
-
+        if short:
+            print '%s\t%s\t%s' % (template[0], template[1], template[2])
+        else:
+            print '%s: %s\n\t%s' % (template[0], template[1], template[2])
 
 def agx_export(modelpath, profilenames):
     if not os.path.exists(modelpath):
@@ -217,7 +222,7 @@ def run():
         agx_info()
         return
     if options.listtemplates != 'unset':
-        avaliable_templates()
+        avaliable_templates(options.short_messages != 'unset')
         return
     # Create the model from a template
     if options.create_model:
