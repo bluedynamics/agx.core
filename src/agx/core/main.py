@@ -3,6 +3,7 @@ from agx.core import loginitializer
 loginitializer.initLog('agx.core.log')
 loginitializer.loghandler = loginitializer.addConsoleLogging()
 # End of the stuff that needs to be handled first.
+
 import os
 import sys
 import re
@@ -69,7 +70,7 @@ def parse_options():
                       help="Create a model from a model template by name. (see '-t' option)",
                       metavar="template_name")
     parser.add_option("-s", "--short", default="unset",
-                      action='store_false',dest="short_messages",
+                      action='store_false', dest="short_messages",
                       help="option for short machine readable messages")
     return parser.parse_args()
 
@@ -84,10 +85,12 @@ def avaliable_templates(short=False):
     confloader = getUtility(IConfLoader)
     for template in confloader.templates:
         if short:
-            print '%s\t%s\t%s' % (template[0], template[1], template[2].replace('\n','<br/>'))
+            print '%s\t%s\t%s' % \
+                (template[0], template[1], template[2].replace('\n', '<br/>'))
         else:
             print '%s: %s\n\t%s' % (template[0], template[1], template[2].replace('\n','\n\t'))
             print
+
 
 def agx_export(modelpath, profilenames):
     if not os.path.exists(modelpath):
