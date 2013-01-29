@@ -86,7 +86,8 @@ def avaliable_templates(short=False):
         if short:
             print '%s\t%s\t%s' % (template[0], template[1], template[2].replace('\n','<br/>'))
         else:
-            print '%s: %s\n\t%s' % (template[0], template[1], template[2])
+            print '%s: %s\n\t%s' % (template[0], template[1], template[2].replace('\n','\n\t'))
+            print
 
 def agx_export(modelpath, profilenames):
     if not os.path.exists(modelpath):
