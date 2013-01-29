@@ -84,7 +84,7 @@ def avaliable_templates(short=False):
     confloader = getUtility(IConfLoader)
     for template in confloader.templates:
         if short:
-            print '%s\t%s\t%s' % (template[0], template[1], template[2])
+            print '%s\t%s\t%s' % (template[0], template[1], template[2].replace('\n','<br/>'))
         else:
             print '%s: %s\n\t%s' % (template[0], template[1], template[2])
 
