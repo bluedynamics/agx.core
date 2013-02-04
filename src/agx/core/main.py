@@ -45,10 +45,10 @@ def parse_options():
                       help="Write generated code to TARGET",
                       metavar="/target/path")
     parser.add_option("-p", "--profiles", dest="profiles", default='',
-                      help="Comma seperated Paths to profile file(s)",
+                      help="Comma separated Paths to profile file(s)",
                       metavar="/path/to/profile1.uml;/path/to/profile2.uml")
     parser.add_option("-e", "--export-profiles", dest="export", default='',
-                      help="Comma seperated profile names to export for model",
+                      help="Comma separated profile names to export for model",
                       metavar='profilename1;profilename2')
     parser.add_option("-l", "--listprofiles",
                       action="store_false", dest="listprofiles",
