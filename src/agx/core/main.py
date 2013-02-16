@@ -267,9 +267,12 @@ def run():
     profilepaths = unify_profile_paths(localdir, modelprofiles)
     # XXX: the following 2 lines must be removed when the hardcoded path
     # is fixed in agx.eclipse
-    if options.outdir == '.':
-        options.outdir = localdir
+#    if options.outdir == '.':
+#        options.outdir = localdir
+
     outdir = options.outdir or localdir
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
     log.info('generating model: %s' % umlpath)
     log.info('using profiles: %s' % profilepaths)
     log.info('generating into: %s' % outdir)
