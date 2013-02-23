@@ -19,7 +19,7 @@ def register_generator(package):
 
 @implementer(IConfLoader)
 class ConfLoader(object):
-    flavour = 'Develop'
+    flavour = 'Reincarnation'  # XXX: rename ``flavour`` to ``code_name``
     transforms = [
         'xmi2uml',
         'uml2fs']
