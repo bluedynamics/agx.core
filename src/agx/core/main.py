@@ -66,9 +66,10 @@ def parse_options():
     parser.add_option("-t", "--listtemplates",
                       action="store_false", dest="listtemplates",
                       default='unset', help="list available model templates")
-    parser.add_option("-c", "--create", dest="create_model", 
-                      help="Create a model from a model template by name. (see '-t' option)",
-                      metavar="template_name")
+    parser.add_option(
+        "-c", "--create", dest="create_model",
+        help="Create a model from a model template by name. (see '-t' option)",
+        metavar="template_name")
     parser.add_option("-s", "--short", default="unset",
                       action='store_false', dest="short_messages",
                       help="option for short machine readable messages")
@@ -88,7 +89,8 @@ def avaliable_templates(short=False):
             print '%s\t%s\t%s' % \
                 (template[0], template[1], template[2].replace('\n', '<br/>'))
         else:
-            print '%s: %s\n\t%s' % (template[0], template[1], template[2].replace('\n','\n\t'))
+            print '%s: %s\n\t%s' % \
+                (template[0], template[1], template[2].replace('\n', '\n\t'))
             print
 
 
@@ -146,7 +148,7 @@ def prepare_model_path(modelpath):
         uml = modelfile
         if os.path.exists(os.path.join(localdir, uml) + '.agx'):
             agx = uml + '.agx'
-    else: # no file suffix given
+    else:  # no file suffix given
         uml = modelfile + '.uml'
         if os.path.exists(os.path.join(localdir, uml) + '.agx'):
             agx = uml + '.agx'
@@ -181,7 +183,7 @@ def unify_profile_paths(localdir, profiles):
     for profile in profiles:
         if profile.endswith('.uml'):
             # its a filename ending with .uml, so lets make it absolute if
-            # necessary 
+            # necessary
             if not os.path.isabs(profile):
                 profile = os.path.join(localdir, profile)
             res.append(profile)
@@ -199,7 +201,7 @@ def create_model(targetdir, templatename, modelname):
     path = settings['path']
     files = os.listdir(path)
     for file in settings['files']:
-        buf = open(os.path.join(path,file)).read()
+        buf = open(os.path.join(path, file)).read()
         # fix model references due to renaming
         if file.endswith('.notation'):
             buf = buf.replace('model.uml', modelname + '.uml')
