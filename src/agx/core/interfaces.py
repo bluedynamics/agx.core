@@ -13,14 +13,14 @@ from node.interfaces import (
 )
 
 
-###############################################################################   
+###############################################################################
 # Core Interfaces
 ###############################################################################
 
 
 class IProfileLocation(Interface):
     """Utility interface.
-    
+
     XXX: move to uml related io as soon as the related stuff in main.py gets
          moved.
     """
@@ -31,7 +31,7 @@ class IProfileLocation(Interface):
 
 class IConfLoader(Interface):
     """Interface to set up the AGX configuration.
-    
+
     This interface is supposed to be implemented by specific generation flavour.
     """
 
@@ -56,7 +56,7 @@ class IController(Interface):
 
     def __call__(sourcepath, targetpath):
         """Invoke controller.
-        
+
         @param sourcepath: source path
         @param targetpath: target path
         """
@@ -68,7 +68,7 @@ class IProcessor(Interface):
 
     def __call__(source, target):
         """Invoke processor.
-        
+
         @param source: ``agx.core.interfaces.ISource``
         @param target: ``agx.core.interfaces.ITarget``
         """
@@ -82,14 +82,14 @@ class ITransform(Interface):
 
     def source(path):
         """Read source.
-        
+
         @param path: source path.
         @return: ``agx.core.interfaces.ISource`` implementation.
         """
 
     def target(path):
         """Read target.
-        
+
         @param path: target path.
         @return: ``agx.core.interfaces.ITarget`` implementation.
         """
@@ -105,7 +105,7 @@ class IGenerator(Interface):
 
     def __call__(source, target):
         """Walk through source and invoke a dispatcher for each element.
-        
+
         @param source: ``agx.core.interfaces.IRoot`` implementation.
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
@@ -119,7 +119,7 @@ class IDispatcher(Interface):
 
     def __call__(source, target):
         """Dispatch handlers for element.
-        
+
         @param source: ``agx.core.interfaces.ISource`` implementation.
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
@@ -134,7 +134,7 @@ class IScope(Interface):
 
     def __call__(node):
         """Check wether scope applies on node.
-        
+
         @param node: ``agx.core.interfaces.INode`` implementation.
         @return: bool
         """
@@ -142,7 +142,7 @@ class IScope(Interface):
 
 class ITargetHandler(Interface):
     """Interface to handle the write target for IHandler implementations.
-    
+
     The implementation of this interface is supposed to provide senceful
     defaults for a generator on ``__call__()`` time, i.e. set or create
     directory targets mapped to UML packages.
@@ -153,13 +153,13 @@ class ITargetHandler(Interface):
 
     def __call__(source):
         """Set ``self.anchor`` refering to given source.
-        
+
         @param source: ``ISource`` implementation.
         """
 
     def setanchor(path):
         """Set anchor manually by given path.
-        
+
         @param path: list representing the absolute node path.
         """
 
@@ -175,7 +175,7 @@ class IHandler(Interface):
 
     def __call__(source, target):
         """Dispatch handlers for element.
-        
+
         @param source: ``agx.core.interfaces.ISource`` implementation.
         @param target: ``agx.core.interfaces.ITargetHandler`` implementation.
         """
@@ -206,13 +206,13 @@ class IDataAcquirer(IReadMapping):
 
     def __getitem__(name):
         """Acquire data from node.
-        
+
         @param name: key of requested data.
         """
 
     def get(name, default=None, aggregate=False, depth=-1, breakiface=None):
         """Acquire data from node.
-        
+
         @param name: key of requested data.
         @param default: default return value.
         @param aggregate: Flag wether to aggregate requested value.
