@@ -208,7 +208,7 @@ def create_model(targetdir, templatename, modelname):
     else:
         print "using target directory %s" % targetdir
     path = settings['path']
-    files = os.listdir(path)
+    #files = os.listdir(path)  # unused?
     for file in settings['files']:
         buf = open(os.path.join(path, file)).read()
         # fix model references due to renaming
