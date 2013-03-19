@@ -194,10 +194,19 @@ def unify_profile_paths(localdir, profiles):
 
 
 def create_model(targetdir, templatename, modelname):
+    """
+    create a model from one of the existing template models
+
+    works like scaffolding, copies over an example model for generation
+    copies .di, .notation, .uml, .uml.agx and profiles
+    """
     confloader = getUtility(IConfLoader)
     settings = confloader.templates_dict[templatename]
     if not os.path.exists(targetdir):
+        print "target directory will be created"
         os.mkdir(targetdir)
+    else:
+        print "using target directory %s" % targetdir
     path = settings['path']
     files = os.listdir(path)
     for file in settings['files']:
