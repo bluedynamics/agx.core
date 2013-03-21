@@ -244,6 +244,8 @@ class Scope(object):
 
     def __call__(self, node):
         for iface in self.interfaces:
+            if iface is None:
+                raise ValueError('The Scope "%s" contains a None-Interface' % (self.name))
             if iface.providedBy(node):
                 return True
         return False
@@ -264,6 +266,8 @@ class Dispatcher(object):
             if handler.scope:
                 scopename = '%s.%s' % (self.transform, handler.scope)
                 scope = getUtility(IScope, name=scopename)
+                if scope is None:
+                    raise ValueError('No Scope defined with name %s' % scopename)
                 if not scope(source):
                     continue
             handler(source, targethandler)
