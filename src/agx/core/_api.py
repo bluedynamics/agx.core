@@ -1,4 +1,7 @@
 import types
+import sys
+import traceback
+
 from odict import odict
 from node.interfaces import IRoot
 from zope.interface import implementer
@@ -167,7 +170,7 @@ class Generator(object):
     def _dispatch(self, children):
         dispatcher = getUtility(IDispatcher, name=self.name)
         for child in children:
-            self.target(child)            
+            self.target(child)
             dispatcher(child, self.target)
             self._dispatch([node for name, node in child.items()])
 
@@ -270,6 +273,7 @@ class Dispatcher(object):
                     raise ValueError('No Scope defined with name %s' % scopename)
                 if not scope(source):
                     continue
+                
             handler(source, targethandler)
 
     def lookup_handlers(self):
@@ -299,7 +303,31 @@ class Handler(object):
         self._callfunc = None
 
     def __call__(self, source, target):
-        self._callfunc(self, source, target)
+        try:
+            self._callfunc(self, source, target)
+        except:
+            #check if the handler belongs to a bleeding edge gen package
+            #if yes, print the exception and continue
+            #to define a generator package as bleeding edge, 
+            #set _bleeding_edge_=True in __init__.py
+            func=self._callfunc
+            dottedpack=func.func_globals['__package__']
+            #initpy=__import__(dottedpack) 
+            #the above stmt should return the generator package, but it doesnt
+            #therefore we do it another way by iterating down the path:
+            packnames=dottedpack.split('.')
+            pack=__import__(packnames[0])
+            for packname in packnames[1:]:
+                pack=getattr(pack,packname)
+            if getattr(pack,'_bleeding_edge_',None):
+                print >> sys.stderr,'Error in ', dottedpack
+                print >> sys.stderr,'===================================='
+                print >> sys.stderr,'Generator execution continues, '+\
+                'since this generator is marked as bleeding edge'
+                traceback.print_exc(None)
+            else:
+                #the generator is not bleeding edge, so lets stop the chain
+                raise
 
 
 def token(name, create, reset=False, **kw):
