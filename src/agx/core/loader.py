@@ -1,3 +1,5 @@
+import sys
+import traceback
 from pkg_resources import iter_entry_points
 
 
@@ -11,4 +13,10 @@ def get_entry_points(ns=None):
 
 
 for ep in get_entry_points('register'):
-    ep.load()()
+    try:
+        ep.load()()
+    except:
+        print >> sys.stderr,'Error importing generator package ', ep.module_name
+        print >> sys.stderr,'===================================='
+        traceback.print_exc(None)
+        

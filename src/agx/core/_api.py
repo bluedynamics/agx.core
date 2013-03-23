@@ -7,6 +7,7 @@ from node.interfaces import IRoot
 from zope.interface import implementer
 from zope.component import (
     getUtility,
+    queryUtility,
     getUtilitiesFor,
     provideUtility,
 )
@@ -268,9 +269,12 @@ class Dispatcher(object):
         for handler in handlers:
             if handler.scope:
                 scopename = '%s.%s' % (self.transform, handler.scope)
-                scope = getUtility(IScope, name=scopename)
+                scope = queryUtility(IScope, name=scopename)
                 if scope is None:
-                    raise ValueError('No Scope defined with name %s' % scopename)
+                    func=handler._callfunc
+                    dottedpack=func.func_globals['__package__']
+                    print >> sys.stderr, ValueError('No Scope defined with name %s for handler %s, defined in %s' % (scopename, func.__name__, dottedpack))
+                    continue
                 if not scope(source):
                     continue
                 
@@ -328,6 +332,7 @@ class Handler(object):
             else:
                 #the generator is not bleeding edge, so lets stop the chain
                 raise
+            
 
 
 def token(name, create, reset=False, **kw):
