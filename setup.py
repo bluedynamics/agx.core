@@ -35,6 +35,7 @@ setup(name='agx.core',
           'setuptools',
           'node',
           'zope.configuration',
+          'zope.component'
       ],
       extras_require = dict(
           test=[
